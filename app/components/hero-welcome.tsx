@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Card, Text } from "@heroui/react";
+import Link from "next/link";
 import { ThemeSwitch } from "./theme-switch";
 
 export function HeroWelcome() {
@@ -37,11 +38,18 @@ export function HeroWelcome() {
               browser.
             </Text>
             <Text size="sm" variant="muted">
-              Edit{" "}
-              <code className="rounded bg-zinc-200 px-1.5 py-0.5 text-xs dark:bg-zinc-800">
-                app/page.tsx
-              </code>{" "}
-              to start building.
+              Políticas dos apps:{" "}
+              <Link
+                className="font-medium text-foreground underline underline-offset-2 hover:text-foreground/80"
+                href="/politicas/"
+              >
+                /politicas/
+              </Link>{" "}
+              (URLs públicas no padrão{" "}
+              <code className="rounded bg-zinc-200 px-1 py-0.5 text-xs dark:bg-zinc-800">
+                /projeto/politica/
+              </code>
+              ).
             </Text>
           </Card.Content>
           <Card.Footer className="flex flex-wrap gap-3">
