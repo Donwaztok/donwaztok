@@ -38,16 +38,23 @@ export function HeroWelcome() {
               browser.
             </Text>
             <Text size="sm" variant="muted">
-              Políticas dos apps:{" "}
+              The home page is the desktop-style environment; return with{" "}
               <Link
                 className="font-medium text-foreground underline underline-offset-2 hover:text-foreground/80"
-                href="/politicas/"
+                href="/"
               >
-                /politicas/
+                /
+              </Link>
+              . App policies:{" "}
+              <Link
+                className="font-medium text-foreground underline underline-offset-2 hover:text-foreground/80"
+                href="/policies/"
+              >
+                /policies/
               </Link>{" "}
-              (URLs públicas no padrão{" "}
+              (public URLs follow{" "}
               <code className="rounded bg-zinc-200 px-1 py-0.5 text-xs dark:bg-zinc-800">
-                /projeto/politica/
+                /project/policy/
               </code>
               ).
             </Text>

@@ -6,22 +6,22 @@ import { listAllPolicies, loadPolicy } from "@/lib/policies";
 import type { Metadata } from "next";
 
 type PageProps = {
-  params: Promise<{ projeto: string; politica: string }>;
+  params: Promise<{ project: string; policy: string }>;
 };
 
 export async function generateStaticParams() {
   const list = await listAllPolicies();
-  return list.map(({ projeto, politica }) => ({ projeto, politica }));
+  return list.map(({ project, policy }) => ({ project, policy }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { projeto, politica } = await params;
-  const loaded = await loadPolicy(projeto, politica);
+  const { project, policy } = await params;
+  const loaded = await loadPolicy(project, policy);
   if (!loaded) {
-    return { title: "Política não encontrada" };
+    return { title: "Policy not found" };
   }
   const { data } = loaded;
-  const title = data.title ?? `${projeto} — ${politica}`;
+  const title = data.title ?? `${project} — ${policy}`;
   return {
     title: `${title} | Donwaztok`,
     description: data.description,
@@ -29,8 +29,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function PolicyPage({ params }: PageProps) {
-  const { projeto, politica } = await params;
-  const loaded = await loadPolicy(projeto, politica);
+  const { project, policy } = await params;
+  const loaded = await loadPolicy(project, policy);
   if (!loaded) {
     notFound();
   }
@@ -49,15 +49,15 @@ export default async function PolicyPage({ params }: PageProps) {
             </Link>
             <span className="text-foreground/40">/</span>
             <Link
-              href="/politicas/"
+              href="/policies/"
               className="text-foreground/70 hover:text-foreground hover:underline"
             >
-              políticas
+              policies
             </Link>
             <span className="text-foreground/40">/</span>
-            <span className="font-medium text-foreground">{projeto}</span>
+            <span className="font-medium text-foreground">{project}</span>
             <span className="text-foreground/40">/</span>
-            <span className="text-foreground/80">{politica}</span>
+            <span className="text-foreground/80">{policy}</span>
           </div>
           <ThemeSwitch />
         </div>
@@ -89,7 +89,7 @@ export default async function PolicyPage({ params }: PageProps) {
               ) : null}
               {data.updated ? (
                 <p>
-                  Última atualização:{" "}
+                  Last updated:{" "}
                   <time dateTime={data.updated}>{data.updated}</time>
                 </p>
               ) : null}

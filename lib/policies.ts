@@ -52,13 +52,13 @@ export function parsePolicyFile(raw: string): {
 }
 
 export async function loadPolicy(
-  projeto: string,
-  politica: string
+  project: string,
+  policy: string
 ): Promise<{ data: PolicyFrontmatter; content: string } | null> {
-  if (!isValidSlug(projeto) || !isValidSlug(politica)) {
+  if (!isValidSlug(project) || !isValidSlug(policy)) {
     return null;
   }
-  const filePath = path.join(POLICIES_ROOT, projeto, `${politica}.md`);
+  const filePath = path.join(POLICIES_ROOT, project, `${policy}.md`);
   const resolved = path.resolve(filePath);
   if (!resolved.startsWith(path.resolve(POLICIES_ROOT))) {
     return null;
@@ -72,13 +72,17 @@ export async function loadPolicy(
 }
 
 export type PolicyIndexEntry = {
-  projeto: string;
-  politica: string;
+  project: string;
+  policy: string;
   title?: string;
+  description?: string;
+  updated?: string;
+  appName?: string;
+  appPackage?: string;
 };
 
 /**
- * Lists all policy files as { projeto, politica } for generateStaticParams / índice.
+ * Lists all policy files for generateStaticParams / index page.
  */
 export async function listAllPolicies(): Promise<PolicyIndexEntry[]> {
   const entries: PolicyIndexEntry[] = [];
@@ -89,9 +93,9 @@ export async function listAllPolicies(): Promise<PolicyIndexEntry[]> {
   } catch {
     return entries;
   }
-  for (const projeto of projectDirs) {
-    if (!isValidSlug(projeto)) continue;
-    const dir = path.join(POLICIES_ROOT, projeto);
+  for (const project of projectDirs) {
+    if (!isValidSlug(project)) continue;
+    const dir = path.join(POLICIES_ROOT, project);
     let files: string[];
     try {
       files = await fs.readdir(dir);
@@ -100,13 +104,18 @@ export async function listAllPolicies(): Promise<PolicyIndexEntry[]> {
     }
     for (const f of files) {
       if (!f.endsWith(".md")) continue;
-      const politica = f.slice(0, -3);
-      if (!isValidSlug(politica)) continue;
-      const loaded = await loadPolicy(projeto, politica);
+      const policy = f.slice(0, -3);
+      if (!isValidSlug(policy)) continue;
+      const loaded = await loadPolicy(project, policy);
+      const d = loaded?.data;
       entries.push({
-        projeto,
-        politica,
-        title: loaded?.data.title,
+        project,
+        policy,
+        title: d?.title,
+        description: d?.description,
+        updated: d?.updated,
+        appName: d?.appName,
+        appPackage: d?.appPackage,
       });
     }
   }

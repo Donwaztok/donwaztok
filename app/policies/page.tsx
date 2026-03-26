@@ -4,11 +4,11 @@ import { listAllPolicies } from "@/lib/policies";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Políticas dos apps | Donwaztok",
-  description: "Políticas de privacidade e documentos legais dos aplicativos Donwaztok.",
+  title: "App policies | Donwaztok",
+  description: "Privacy policies and legal documents for Donwaztok apps.",
 };
 
-export default async function PoliticasIndexPage() {
+export default async function PoliciesIndexPage() {
   const policies = await listAllPolicies();
 
   return (
@@ -23,7 +23,7 @@ export default async function PoliticasIndexPage() {
               Donwaztok
             </Link>
             <span className="text-foreground/40">/</span>
-            <span className="text-foreground/80">políticas</span>
+            <span className="text-foreground/80">policies</span>
           </div>
           <ThemeSwitch />
         </div>
@@ -33,20 +33,20 @@ export default async function PoliticasIndexPage() {
         <div className="mx-auto w-full max-w-2xl space-y-8">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-              Políticas por projeto
+              Policies by project
             </h1>
             <p className="mt-2 text-sm leading-relaxed text-foreground/70">
-              Cada URL segue o padrão{" "}
+              Each public URL follows{" "}
               <code className="rounded bg-zinc-200 px-1.5 py-0.5 text-xs dark:bg-zinc-800">
-                /&#123;projeto&#125;/&#123;política&#125;/
+                /&#123;project&#125;/&#123;policy&#125;/
               </code>
-              . Use o link público no Google Play Console, App Store Connect, etc.
+              . Use these links in Google Play Console, App Store Connect, and similar.
             </p>
           </div>
 
           {policies.length === 0 ? (
             <p className="text-sm text-foreground/60">
-              Nenhuma política encontrada em{" "}
+              No policies found under{" "}
               <code className="rounded bg-zinc-200 px-1 py-0.5 text-xs dark:bg-zinc-800">
                 content/policies/
               </code>
@@ -54,17 +54,17 @@ export default async function PoliticasIndexPage() {
             </p>
           ) : (
             <ul className="space-y-3">
-              {policies.map(({ projeto, politica, title }) => (
-                <li key={`${projeto}/${politica}`}>
+              {policies.map(({ project, policy, title }) => (
+                <li key={`${project}/${policy}`}>
                   <Link
-                    href={`/${projeto}/${politica}/`}
+                    href={`/${project}/${policy}/`}
                     className="group block rounded-lg border border-zinc-200/80 bg-background px-4 py-3 transition-colors hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:border-zinc-700 dark:hover:bg-zinc-900/50"
                   >
                     <span className="font-medium text-foreground group-hover:underline">
-                      {title ?? `${projeto} / ${politica}`}
+                      {title ?? `${project} / ${policy}`}
                     </span>
                     <p className="mt-0.5 font-mono text-xs text-foreground/50">
-                      /{projeto}/{politica}/
+                      /{project}/{policy}/
                     </p>
                   </Link>
                 </li>

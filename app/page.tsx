@@ -1,5 +1,5 @@
-import { HeroWelcome } from "./components/hero-welcome";
+import { LinuxDesktop } from "./components/linux-desktop";
 
 export default function Home() {
-  return <HeroWelcome />;
+  return <LinuxDesktop />;
 }
