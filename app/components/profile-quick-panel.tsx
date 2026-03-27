@@ -35,12 +35,14 @@ function ShortcutIcon({ icon }: { icon: ProfileShortcut["icon"] }) {
         </svg>
       );
     case "ducke":
+      // vinext: `/_vinext/image` is only wired when `pages/` exists; skip optimizer for static public assets.
       return (
         <Image
           src="/ducke-logo-bordered.png"
           alt=""
           width={72}
           height={27}
+          unoptimized
           className="h-[18px] w-auto max-w-[2.35rem] object-contain object-center"
         />
       );

@@ -1,12 +1,13 @@
 import { aboutProfile } from "@/lib/about-me";
 import type { GitHubRepoItem } from "@/lib/github-repo-public";
+import { fetchWithNext } from "@/lib/vinext-fetch";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const login =
     request.nextUrl.searchParams.get("login") ?? aboutProfile.githubLogin;
 
-  const res = await fetch(
+  const res = await fetchWithNext(
     `https://api.github.com/users/${encodeURIComponent(login)}/repos?per_page=100&sort=updated&type=public`,
     {
       headers: {

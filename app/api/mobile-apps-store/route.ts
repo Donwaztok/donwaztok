@@ -4,6 +4,7 @@ import type {
   EnrichedMobileApp,
   PlayStoreListing,
 } from "@/lib/mobile-store-types";
+import { fetchWithNext } from "@/lib/vinext-fetch";
 import { NextResponse } from "next/server";
 import gplay from "google-play-scraper";
 
@@ -51,10 +52,13 @@ async function fetchAppStore(
       : null;
   if (!q) return null;
 
-  const res = await fetch(`https://itunes.apple.com/lookup?${q}&country=br`, {
-    headers: { Accept: "application/json" },
-    next: { revalidate: 3600 },
-  });
+  const res = await fetchWithNext(
+    `https://itunes.apple.com/lookup?${q}&country=br`,
+    {
+      headers: { Accept: "application/json" },
+      next: { revalidate: 3600 },
+    },
+  );
   if (!res.ok) return null;
   const j = (await res.json()) as {
     resultCount?: number;

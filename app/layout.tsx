@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Geist, Geist_Mono } from "next/font/google";
+import googleFonts from "next/font/google";
 import Script from "next/script";
 import { themeInitScript } from "@/lib/theme";
 import "./globals.css";
 
-const geistSans = Geist({
+const geistSans = googleFonts.Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
+const geistMono = googleFonts.Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });

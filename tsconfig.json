@@ -13,21 +13,23 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "next/font/google": ["./node_modules/vinext/dist/shims/font-google"],
+      "next/font/local": ["./node_modules/vinext/dist/shims/font-local"],
+      "next/image": ["./node_modules/vinext/dist/shims/image"],
+      "next/link": ["./node_modules/vinext/dist/shims/link"],
+      "next/navigation": ["./node_modules/vinext/dist/shims/navigation"],
+      "next/script": ["./node_modules/vinext/dist/shims/script"],
+      "next/server": ["./node_modules/vinext/dist/shims/server"]
     }
   },
   "include": [
     "next-env.d.ts",
+    "types/**/*.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
   "exclude": ["node_modules"]
