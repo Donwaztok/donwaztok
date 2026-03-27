@@ -7,6 +7,8 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   globalIgnores([
     ".next/**",
+    ".output/**",
+    ".vercel/**",
     "out/**",
     "build/**",
     "dist/**",
