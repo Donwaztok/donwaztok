@@ -1,7 +1,12 @@
-import fs from "node:fs/promises";
-import path from "node:path";
-
-const POLICIES_ROOT = path.join(process.cwd(), "content", "policies");
+/**
+ * Policy markdown is bundled via import.meta.glob so it is available on Vercel
+ * (serverless bundles do not include arbitrary repo paths like content/policies/).
+ */
+const policySources = import.meta.glob("../content/policies/*/*.md", {
+  eager: true,
+  query: "?raw",
+  import: "default",
+}) as Record<string, string>;
 
 export type PolicyFrontmatter = {
   title?: string;
@@ -13,6 +18,24 @@ export type PolicyFrontmatter = {
 
 function isValidSlug(segment: string): boolean {
   return /^[a-z0-9]+(?:-[a-z0-9]+)*$/i.test(segment) && !segment.includes("..");
+}
+
+function slugsFromModuleKey(key: string): { project: string; policy: string } | null {
+  const normalized = key.replace(/\\/g, "/");
+  const match = normalized.match(/content\/policies\/([^/]+)\/([^/]+)\.md$/);
+  if (!match) return null;
+  const project = match[1];
+  const policy = match[2];
+  if (!isValidSlug(project) || !isValidSlug(policy)) return null;
+  return { project, policy };
+}
+
+const POLICY_BY_KEY = new Map<string, string>();
+
+for (const [moduleKey, raw] of Object.entries(policySources)) {
+  const slugs = slugsFromModuleKey(moduleKey);
+  if (!slugs) continue;
+  POLICY_BY_KEY.set(`${slugs.project}/${slugs.policy}`, raw);
 }
 
 /**
@@ -58,17 +81,11 @@ export async function loadPolicy(
   if (!isValidSlug(project) || !isValidSlug(policy)) {
     return null;
   }
-  const filePath = path.join(POLICIES_ROOT, project, `${policy}.md`);
-  const resolved = path.resolve(filePath);
-  if (!resolved.startsWith(path.resolve(POLICIES_ROOT))) {
+  const raw = POLICY_BY_KEY.get(`${project}/${policy}`);
+  if (raw === undefined) {
     return null;
   }
-  try {
-    const raw = await fs.readFile(filePath, "utf8");
-    return parsePolicyFile(raw);
-  } catch {
-    return null;
-  }
+  return parsePolicyFile(raw);
 }
 
 export type PolicyIndexEntry = {
@@ -86,38 +103,26 @@ export type PolicyIndexEntry = {
  */
 export async function listAllPolicies(): Promise<PolicyIndexEntry[]> {
   const entries: PolicyIndexEntry[] = [];
-  let projectDirs: string[];
-  try {
-    const dirents = await fs.readdir(POLICIES_ROOT, { withFileTypes: true });
-    projectDirs = dirents.filter((d) => d.isDirectory()).map((d) => d.name);
-  } catch {
-    return entries;
+  for (const [key, raw] of POLICY_BY_KEY) {
+    const slash = key.indexOf("/");
+    if (slash === -1) continue;
+    const project = key.slice(0, slash);
+    const policy = key.slice(slash + 1);
+    const { data } = parsePolicyFile(raw);
+    entries.push({
+      project,
+      policy,
+      title: data.title,
+      description: data.description,
+      updated: data.updated,
+      appName: data.appName,
+      appPackage: data.appPackage,
+    });
   }
-  for (const project of projectDirs) {
-    if (!isValidSlug(project)) continue;
-    const dir = path.join(POLICIES_ROOT, project);
-    let files: string[];
-    try {
-      files = await fs.readdir(dir);
-    } catch {
-      continue;
-    }
-    for (const f of files) {
-      if (!f.endsWith(".md")) continue;
-      const policy = f.slice(0, -3);
-      if (!isValidSlug(policy)) continue;
-      const loaded = await loadPolicy(project, policy);
-      const d = loaded?.data;
-      entries.push({
-        project,
-        policy,
-        title: d?.title,
-        description: d?.description,
-        updated: d?.updated,
-        appName: d?.appName,
-        appPackage: d?.appPackage,
-      });
-    }
-  }
+  entries.sort((a, b) => {
+    const pa = `${a.project}/${a.policy}`;
+    const pb = `${b.project}/${b.policy}`;
+    return pa.localeCompare(pb);
+  });
   return entries;
 }
