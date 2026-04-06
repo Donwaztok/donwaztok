@@ -29,13 +29,14 @@ export type MobileApp = {
 
 export const mobileApps: MobileApp[] = [
   {
-    id: "app-template",
-    name: "app-template",
+    id: "pocketflow",
+    name: "PocketFlow",
     shortDescription:
-      "Template Android app with AdMob, in-app purchases, and Expo / EAS updates.",
-    packageId: "com.Donwaztok.apptemplate",
+      "PocketFlow — Android app with AdMob, in-app purchases, and Expo / EAS updates.",
+    packageId: "com.donwaztok.pocketflow",
     platforms: ["Android"],
     stack: "Expo · React Native · TypeScript",
-    updated: "2026-03-24",
+    updated: "2026-03-30",
+    privacyPolicyPath: "pocket-flow/privacy",
   },
 ];
