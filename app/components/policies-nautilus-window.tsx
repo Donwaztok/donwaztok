@@ -77,7 +77,7 @@ export function PoliciesNautilusWindow({
                     href={`/${p.project}/${p.policy}/`}
                     className="group inline-flex items-center gap-1 text-[13px] font-semibold leading-tight text-[var(--pq-accent)] hover:text-[#ffe08a] hover:underline"
                   >
-                    {p.title ?? `${p.project} / ${p.policy}`}
+                    {p.appName ?? p.title ?? `${p.project} / ${p.policy}`}
                     <IconChevronRight className="shrink-0 text-white/35 transition-colors group-hover:text-[var(--pq-accent)]" />
                   </Link>
                   <p className="mt-px font-mono text-[11px] leading-tight text-white/38">
