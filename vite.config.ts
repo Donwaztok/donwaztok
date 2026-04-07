@@ -1,12 +1,13 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { nitro } from "nitro/vite";
 import vinext from "vinext";
 import { defineConfig } from "vite";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export default defineConfig({
-  plugins: [vinext()],
+export default defineConfig(({ command }) => ({
+  plugins: [vinext(), ...(command === "build" ? [nitro()] : [])],
   resolve: {
     // postcss-import (Vite CSS) resolves bare imports as filesystem paths; HeroUI CSS uses
     // @import "tailwindcss" / "tw-animate-css" which must map to real files.
@@ -22,4 +23,4 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ["google-play-scraper"],
   },
-});
+}));
