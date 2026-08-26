@@ -39,4 +39,16 @@ export const mobileApps: MobileApp[] = [
     updated: "2026-03-30",
     privacyPolicyPath: "pocket-flow/privacy",
   },
+  {
+    id: "tic-tac-toe",
+    name: "Don's Tic Tac Toe",
+    shortDescription:
+      "Classic tic-tac-toe with themes, AdMob, and in-app purchases.",
+    packageId: "com.donwaztok.tictactoeinfinite",
+    iosBundleId: "com.donwaztok.tictactoeinfinite",
+    platforms: ["Android", "iOS"],
+    stack: "Expo · React Native · TypeScript",
+    updated: "2026-08-26",
+    privacyPolicyPath: "tic-tac-toe/privacy",
+  },
 ];
