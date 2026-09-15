@@ -51,4 +51,16 @@ export const mobileApps: MobileApp[] = [
     updated: "2026-08-26",
     privacyPolicyPath: "tic-tac-toe/privacy",
   },
+  {
+    id: "lifelink",
+    name: "LifeLink",
+    shortDescription:
+      "Commander life tracker with table layouts, play counters, AdMob, and optional LAN room sync.",
+    packageId: "com.Donwaztok.lifelink",
+    iosBundleId: "com.Donwaztok.lifelink",
+    platforms: ["Android", "iOS"],
+    stack: "Expo · React Native · TypeScript",
+    updated: "2026-09-15",
+    privacyPolicyPath: "lifelink/privacy",
+  },
 ];
