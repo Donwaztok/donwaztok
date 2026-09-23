@@ -1,9 +1,9 @@
 ---
 title: Privacy Policy
-description: Privacy policy for the app-template application (com.Donwaztok.apptemplate).
+description: Privacy policy for the app-template application (com.donwaztok.apptemplate).
 updated: "2026-03-24"
 appName: app-template
-appPackage: com.Donwaztok.apptemplate
+appPackage: com.donwaztok.apptemplate
 ---
 
 This policy describes how the application handles information when you use it. By using the app, you agree to the practices described here, to the extent applicable in your jurisdiction.
